@@ -1,0 +1,1 @@
+const e={whatsapp:"96181773588"},s={favorites:"instyle:favorites",cart:"instyle:cart",recentlyViewed:"instyle:recent"},a=t=>`https://wa.me/${e.whatsapp}?text=${encodeURIComponent(t)}`;export{e as C,s as S,a as g};
