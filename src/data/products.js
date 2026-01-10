@@ -64,13 +64,13 @@ import CH_1 from '../../images/CH_1.webp';
 import CH_2 from '../../images/CH_2.webp';
 
 export const CATEGORIES = [
-  { id: 'bedrooms', name: 'Bedrooms', image: Beds1 },
-  { id: 'tv-units', name: 'TV Units', image: TV1 },
-  { id: 'sofas', name: 'Sofas', image: Sofa1 },
-  { id: 'tables', name: 'Tables', image: Table1 },
-  { id: 'consoles', name: 'Consoles', image: Table2 },
-  { id: 'dining-tables', name: 'Dinning Tables', image: Dinning1 },
-  { id: 'chairs', name: 'Chairs', image: Mirror1 },
+  { id: 'bedrooms', name: 'Bedrooms', image: Bedroom_1 },
+  { id: 'tv-units', name: 'TV Units', image: Tv_1 },
+  { id: 'sofas', name: 'Sofas', image: S_1 },
+  { id: 'tables', name: 'Tables', image: Table_1 },
+  { id: 'consoles', name: 'Consoles', image: C_1 },
+  { id: 'dining-tables', name: 'Dinning Tables', image: Dining_1 },
+  { id: 'chairs', name: 'Chairs', image: CH_1 },
   { id: 'wall-cladding', name: 'Wall Cladding', image: Wall1 },
 ];
 

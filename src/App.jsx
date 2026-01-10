@@ -511,9 +511,15 @@ const CollectionsSection = memo(({ onAddToCart, navigate }) => {
     }, {});
   }, []);
 
-  // Featured products (ones with tags)
+  // Featured products (hand-picked: 3 items from different categories with diverse price ranges)
   const featuredProducts = useMemo(() => {
-    return PRODUCTS.filter(p => p.tag).slice(0, 8);
+    // Pick 3 specific products: low price, medium price, high price from different categories
+    const picks = [
+      PRODUCTS.find(p => p.id === 4001), // Standard Coffee Table - $165 (Tables)
+      PRODUCTS.find(p => p.id === 2001), // Levant Floating Console - $320 (TV Units)
+      PRODUCTS.find(p => p.id === 1001), // Premium Master Suite - $1,450 (Bedrooms)
+    ].filter(Boolean);
+    return picks;
   }, []);
 
   const handleCategoryClick = useCallback((catId) => {
@@ -636,9 +642,9 @@ const CollectionsSection = memo(({ onAddToCart, navigate }) => {
               </button>
             </div>
 
-            {/* Products grid - 4 columns on desktop */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {featuredProducts.slice(0, 4).map((product) => (
+            {/* Products grid - 3 columns on desktop */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              {featuredProducts.slice(0, 3).map((product) => (
                 <div
                   key={product.id}
                   className="group cursor-pointer"
