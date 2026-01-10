@@ -18,11 +18,11 @@ const VideoHero = () => {
       const vh = window.visualViewport?.height || window.innerHeight;
       setViewportHeight(`${vh}px`);
     };
-    
+
     updateViewportHeight();
     window.addEventListener('resize', updateViewportHeight);
     window.visualViewport?.addEventListener('resize', updateViewportHeight);
-    
+
     return () => {
       window.removeEventListener('resize', updateViewportHeight);
       window.visualViewport?.removeEventListener('resize', updateViewportHeight);
@@ -38,7 +38,7 @@ const VideoHero = () => {
     link.href = '/videos/hero.mp4';
     link.type = 'video/mp4';
     document.head.appendChild(link);
-    
+
     return () => {
       document.head.removeChild(link);
     };
@@ -58,8 +58,8 @@ const VideoHero = () => {
   };
 
   return (
-    <header 
-      className="relative w-full overflow-hidden bg-[#0F0E0D]" 
+    <header
+      className="relative w-full overflow-hidden bg-[#0F0E0D]"
       style={{ height: viewportHeight, minHeight: '500px', maxHeight: '100dvh' }}
     >
       {!videoError ? (
@@ -87,7 +87,7 @@ const VideoHero = () => {
 
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/40 to-transparent"></div>
-      
+
       {/* Decorative elements */}
       <div className="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true">
         <div className="absolute -left-16 top-12 w-64 h-64 rounded-full bg-[#C5A059]/20 blur-3xl" />
@@ -97,18 +97,18 @@ const VideoHero = () => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-5 sm:px-6 md:px-12 h-full flex items-center">
         <div className="max-w-2xl pt-16 md:pt-0">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-5 sm:mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-5 sm:mb-6 opacity-0 animate-[fade-in_0.8s_ease-out_forwards]">
             Warmth in
             <br />
             Every Detail.
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-300/90 leading-relaxed mb-8 sm:mb-10 font-light max-w-md">
+          <p className="text-base sm:text-lg text-gray-300/90 leading-relaxed mb-8 sm:mb-10 font-light max-w-md opacity-0 animate-[fade-in_0.8s_ease-out_0.3s_forwards]">
             Modern carpentry tailored to your exact space. From smart TV units that hide every cable to wall cladding that transforms a room.
           </p>
 
-          <a href="#furniture" className="inline-block">
-            <button className="inline-flex items-center justify-center gap-2 px-7 py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-xl bg-[#C5A059] text-white hover:bg-[#B08D45] shadow-lg shadow-[#C5A059]/30">
+          <a href="#furniture" className="inline-block opacity-0 animate-[fade-in_0.8s_ease-out_0.6s_forwards]">
+            <button className="inline-flex items-center justify-center gap-2 px-7 py-4 text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-xl bg-[#C5A059] text-white hover:bg-[#B08D45] shadow-lg shadow-[#C5A059]/30 hover:scale-105 active:scale-95">
               Discover the Collection
               <ArrowRight size={16} />
             </button>

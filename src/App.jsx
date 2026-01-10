@@ -142,7 +142,7 @@ const TrustBar = memo(() => (
         <div className="hidden md:block w-px h-4 bg-white/20" />
         <div className="hidden md:flex items-center gap-2.5 text-white/80">
           <Clock size={15} className="text-[#C5A059] shrink-0" />
-          <span className="text-sm whitespace-nowrap">Delivery Across Lebanon</span>
+          <span className="text-sm whitespace-nowrap">Reliable Delivery Across Lebanon</span>
         </div>
       </div>
     </div>
@@ -375,12 +375,12 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
 
   return (
     <>
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/95 backdrop-blur-md shadow-sm py-4 top-0' : 'bg-transparent py-5 top-0'}`}>
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3 top-0' : 'bg-transparent py-6 top-0'}`}>
         <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
-          <a href="/" onClick={(e) => { e.preventDefault(); if (navigate) navigate('/'); }} className="flex items-center group">
-            <img src="/images/instyle-logo.png" alt="InStyle Modern Wood Art" className="h-40 w-auto object-contain transition-opacity group-hover:opacity-80 -my-10" />
+          <a href="/" onClick={(e) => { e.preventDefault(); if (navigate) navigate('/'); }} className="flex items-center group relative z-50">
+            <img src="/images/instyle-logo.png" alt="InStyle Modern Wood Art" className={`object-contain transition-all duration-300 ${scrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'}`} />
           </a>
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-2 bg-black/5 backdrop-blur-sm rounded-full p-1.5 border border-white/10">
             {['Collections', 'Curated', 'Spotlight', 'Process', 'Contact'].map((item) => {
               const href = `/#${item.toLowerCase()}`;
               return (
@@ -388,7 +388,7 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
                   key={item}
                   href={href}
                   onClick={(e) => handleNavClick(e, item, href)}
-                  className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-transparent"
+                  className={`px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C5A059] ${scrolled ? 'text-gray-800 hover:bg-black/5' : 'text-white hover:bg-white/10'}`}
                 >
                   {item}
                 </a>
@@ -399,39 +399,38 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
             <a
               href="/arts"
               onClick={(e) => handleNavClick(e, 'InStyle Arts', '/arts')}
-              className="group relative mx-3 px-5 py-2 text-sm font-medium overflow-hidden rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#C5A059] focus:ring-offset-2 focus:ring-offset-black"
+              className="group relative px-6 py-2 text-sm font-medium overflow-hidden rounded-full transition-all duration-300 ml-2"
             >
               {/* Background gradient */}
-              <span className="absolute inset-0 bg-gradient-to-r from-[#C5A059] via-[#D4AF61] to-[#C5A059] opacity-90"></span>
-              {/* Shimmer effect */}
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-              {/* Border glow */}
-              <span className="absolute inset-0 rounded-full border border-[#D4AF61]/50 group-hover:border-white/30 transition-colors"></span>
+              <span className="absolute inset-0 bg-gradient-to-r from-[#C5A059] via-[#D4AF61] to-[#C5A059] opacity-100 shadow-md"></span>
+
               {/* Content */}
-              <span className="relative flex items-center gap-2 text-[#1C1B1A] font-semibold">
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <path d="M21 15l-5-5L5 21" />
-                </svg>
+              <span className="relative flex items-center gap-2 text-white font-bold tracking-wide">
+                <span className="bg-white/20 p-0.5 rounded">
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="M21 15l-5-5L5 21" />
+                  </svg>
+                </span>
                 InStyle Arts
               </span>
             </a>
           </div>
           <div className="flex items-center gap-4">
-            <button onClick={onOpenCart} className="relative p-2 text-white hover:text-[#C5A059] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded-full btn-press">
+            <button onClick={onOpenCart} className={`relative p-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded-full btn-press ${scrolled ? 'text-[#1C1B1A] hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}>
               <ShoppingBag size={20} />
               {cartCount > 0 && (
-                <span key={cartBadgeKey} className="absolute top-0 right-0 bg-[#C5A059] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold badge-animate">{cartCount}</span>
+                <span key={cartBadgeKey} className="absolute top-0 right-0 bg-[#C5A059] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold badge-animate shadow-sm">{cartCount}</span>
               )}
             </button>
             <div className="relative">
-              <button onClick={() => openFavorites && openFavorites()} aria-label="Open favorites" className="p-2 text-white hover:text-[#C5A059] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded-full btn-press"><Heart size={18} /></button>
-              {favCount > 0 && (<span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold badge-animate">{favCount}</span>)}
+              <button onClick={() => openFavorites && openFavorites()} aria-label="Open favorites" className={`p-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded-full btn-press ${scrolled ? 'text-[#1C1B1A] hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}><Heart size={20} /></button>
+              {favCount > 0 && (<span className="absolute top-0 right-0 bg-red-500 text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold badge-animate shadow-sm">{favCount}</span>)}
             </div>
-            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden text-white hover:text-[#C5A059] transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded"><Menu size={24} /></button>
+            <button onClick={() => setMobileMenuOpen(true)} className={`lg:hidden transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded p-1 ${scrolled ? 'text-[#1C1B1A]' : 'text-white'}`}><Menu size={28} /></button>
             <a href="https://wa.me/96181773588" target="_blank" rel="noopener noreferrer">
-              <Button variant="primary" className="hidden lg:inline-flex py-2 px-5 text-[10px] h-10 btn-shine">Book Visit</Button>
+              <Button variant="primary" className="hidden lg:inline-flex py-2.5 px-6 text-[11px] h-11 btn-shine rounded-full shadow-lg hover:shadow-xl translate-y-0 hover:-translate-y-0.5">Book Visit</Button>
             </a>
           </div>
         </div>
@@ -702,79 +701,80 @@ const ProductCard = memo(({ product, onAddToCart, navigate, index, compact = fal
 
   return (
     <div
-      className="group cursor-pointer"
+      className="group cursor-pointer product-card rounded-2xl"
       onClick={handleClick}
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <div className={`relative overflow-hidden bg-[#F5F5F5] rounded-xl ${compact ? 'aspect-square' : 'aspect-[4/3]'}`}>
+      <div className={`relative overflow-hidden bg-[#F5F5F5] ${compact ? 'aspect-square' : 'aspect-[4/3]'}`}>
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
           loading="lazy"
         />
 
         {/* Tag Badge */}
         {product.tag && (
-          <span className={`absolute top-3 left-3 px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-md ${product.tag === 'New' ? 'bg-[#1C1B1A] text-white' :
+          <span className={`absolute top-3 left-3 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-full shadow-md z-10 ${product.tag === 'New' ? 'bg-[#1C1B1A] text-white' :
             product.tag === 'Best Seller' ? 'bg-[#C5A059] text-white' :
-              'bg-white text-[#1C1B1A]'
+              product.tag === 'Premium' ? 'bg-[#1C1B1A] text-[#C5A059] border border-[#C5A059]' :
+                'bg-white text-[#1C1B1A]'
             }`}>
             {product.tag}
           </span>
         )}
 
-        {/* Quick add button */}
+        {/* Quick add button - Mobile optimized */}
         <button
           onClick={handleQuickAdd}
-          className="absolute top-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[#C5A059] hover:text-white transform scale-90 group-hover:scale-100"
+          className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[#C5A059] hover:text-white transform scale-90 group-hover:scale-100 z-20 touch-btn"
           title="Quick add to cart"
         >
-          <Plus size={18} />
+          <Plus size={20} strokeWidth={2.5} />
         </button>
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
         {/* View Details Pill */}
-        <div className="absolute inset-x-0 bottom-4 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none">
-          <span className="bg-white px-4 py-2 rounded-full flex items-center gap-2 text-xs font-medium text-[#1C1B1A] shadow-lg">
+        <div className="absolute inset-x-0 bottom-16 flex justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none z-10 hidden md:flex">
+          <span className="bg-white/95 backdrop-blur px-5 py-2.5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#1C1B1A] shadow-lg">
             <Eye size={14} />
             View Details
           </span>
         </div>
 
-        {/* Quick Actions Bar */}
-        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex">
+        {/* Quick Actions Bar - Always visible on mobile if needed, or stick to hover for desktop */}
+        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex z-20">
           <a
             href={`https://wa.me/96181773588?text=Hi!%20I'm%20interested%20in%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex-1 bg-[#25D366] text-white py-2.5 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[#128C7E] transition-colors"
+            className="flex-1 bg-[#25D366] text-white py-3 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[#128C7E] transition-colors"
           >
-            <MessageCircle size={12} />
+            <MessageCircle size={14} />
             Inquire
           </a>
           <button
             onClick={handleQuickAdd}
-            className="flex-1 bg-[#1C1B1A] text-white py-2.5 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[#C5A059] transition-colors"
+            className="flex-1 bg-[#1C1B1A] text-white py-3 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[#C5A059] transition-colors"
           >
-            <Plus size={12} />
+            <Plus size={14} />
             Add
           </button>
         </div>
       </div>
 
-      <div className={compact ? 'p-3' : 'p-4'}>
-        <p className="text-[9px] uppercase tracking-widest text-[#C5A059] mb-0.5 font-medium">{product.category}</p>
-        <h3 className={`font-medium text-[#1C1B1A] group-hover:text-[#C5A059] transition-colors leading-tight ${compact ? 'text-sm truncate' : 'text-base'}`}>
+      <div className={compact ? 'p-3' : 'p-5'}>
+        <p className="text-[10px] uppercase tracking-widest text-[#C5A059] mb-1 font-bold">{product.category}</p>
+        <h3 className={`font-serif text-[#1C1B1A] group-hover:text-[#C5A059] transition-colors leading-tight mb-2 ${compact ? 'text-base truncate' : 'text-lg'}`}>
           {product.name}
         </h3>
-        <div className="flex items-center justify-between mt-1.5">
-          <span className="font-serif font-bold text-[#1C1B1A]">${product.price.toLocaleString()}</span>
+        <div className="flex items-center justify-between">
+          <span className="font-bold text-[#1C1B1A] text-lg">${product.price.toLocaleString()}</span>
           {!compact && product.dimensions && (
-            <span className="text-[10px] text-[#999]">{product.dimensions}</span>
+            <span className="text-[10px] text-[#999] bg-[#F5F5F5] px-2 py-1 rounded-md">{product.dimensions}</span>
           )}
         </div>
       </div>
