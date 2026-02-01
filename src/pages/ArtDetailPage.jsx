@@ -167,8 +167,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
           <div className="space-y-4">
             {/* Main Image */}
             <div
-              className="relative aspect-square bg-white rounded-xl overflow-hidden border border-[#E5E5E5] cursor-zoom-in group"
-              onClick={() => setIsZoomed(true)}
+              className={`relative aspect-square bg-white rounded-xl overflow-hidden border border-[#E5E5E5] group ${isPainting ? 'cursor-zoom-in' : ''}`}
+              onClick={() => isPainting && setIsZoomed(true)}
             >
               <img
                 src={galleryImages[selectedImageIndex]?.src}
@@ -193,10 +193,12 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                   <Share2 size={20} className="text-[#666]" />
                 </button>
               </div>
-              <div className="absolute bottom-4 right-4 bg-white/90 px-3 py-1.5 rounded-full flex items-center gap-2 text-xs text-[#666]">
-                <ZoomIn size={14} />
-                Click to zoom
-              </div>
+              {isPainting && (
+                <div className="absolute bottom-4 right-4 bg-white/90 px-3 py-1.5 rounded-full flex items-center gap-2 text-xs text-[#666]">
+                  <ZoomIn size={14} />
+                  Click to zoom
+                </div>
+              )}
 
               {/* Navigation arrows */}
               {galleryImages.length > 1 && (
@@ -225,8 +227,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
                     className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImageIndex === idx
-                        ? 'border-[#C5A059] shadow-md'
-                        : 'border-[#E5E5E5] hover:border-[#C5A059]/50'
+                      ? 'border-[#C5A059] shadow-md'
+                      : 'border-[#E5E5E5] hover:border-[#C5A059]/50'
                       }`}
                   >
                     <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
@@ -296,37 +298,13 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                 )}
 
                 {isPrint && (
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-3 col-span-2">
                     <div className="w-8 h-8 rounded-full bg-[#F9F8F6] flex items-center justify-center shrink-0">
                       <Image size={16} className="text-[#C5A059]" />
                     </div>
                     <div>
                       <p className="text-xs text-[#999] uppercase tracking-wider">Print Type</p>
-                      <p className="font-medium text-[#1C1B1A]">Museum-Quality Giclée</p>
-                    </div>
-                  </div>
-                )}
-
-                {isPainting && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#F9F8F6] flex items-center justify-center shrink-0">
-                      <Palette size={16} className="text-[#C5A059]" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-[#999] uppercase tracking-wider">Medium</p>
-                      <p className="font-medium text-[#1C1B1A]">Oil on Canvas</p>
-                    </div>
-                  </div>
-                )}
-
-                {isPrint && (
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#F9F8F6] flex items-center justify-center shrink-0">
-                      <Ruler size={16} className="text-[#C5A059]" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-[#999] uppercase tracking-wider">Paper</p>
-                      <p className="font-medium text-[#1C1B1A]">200gsm Matte Archival</p>
+                      <p className="font-medium text-[#1C1B1A]">High Quality Print</p>
                     </div>
                   </div>
                 )}
@@ -342,8 +320,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                         key={size}
                         onClick={() => setSelectedSize(size)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedSize === size
-                            ? 'bg-[#1C1B1A] text-white'
-                            : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
+                          ? 'bg-[#1C1B1A] text-white'
+                          : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
                           }`}
                       >
                         <span className="block">{SIZES[size]?.label}</span>
@@ -354,59 +332,6 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                 </div>
               )}
 
-              {/* Glass Options for Prints */}
-              {isPrint && (
-                <div className="pt-4 border-t border-[#E5E5E5]">
-                  <p className="text-xs text-[#999] uppercase tracking-wider mb-3">Glass Type</p>
-                  <div className="flex flex-wrap gap-2">
-                    {GLASS_OPTIONS.map((glass) => (
-                      <button
-                        key={glass.id}
-                        onClick={() => setSelectedGlass(glass.id)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedGlass === glass.id
-                            ? 'bg-[#1C1B1A] text-white'
-                            : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
-                          }`}
-                      >
-                        <span className="block">{glass.label}</span>
-                        {glass.priceModifier > 0 && (
-                          <span className="block text-xs opacity-75">+${glass.priceModifier}</span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Frame Color Selection for Prints */}
-              {isPrint && (
-                <div className="pt-4 border-t border-[#E5E5E5]">
-                  <p className="text-xs text-[#999] uppercase tracking-wider mb-3">Frame Color</p>
-                  <div className="flex flex-wrap gap-2">
-                    {FRAMES.map((frame) => (
-                      <button
-                        key={frame}
-                        onClick={() => setSelectedFrame(frame)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${selectedFrame === frame
-                            ? 'bg-[#1C1B1A] text-white'
-                            : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
-                          }`}
-                      >
-                        <span
-                          className="w-4 h-4 rounded-full border border-gray-300"
-                          style={{
-                            backgroundColor: frame === 'Black' ? '#1C1B1A' :
-                              frame === 'White' ? '#FFFFFF' :
-                                frame === 'Walnut' ? '#5D4037' :
-                                  '#D4A574'
-                          }}
-                        />
-                        {frame}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Features */}
@@ -430,15 +355,11 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                 <>
                   <div className="flex items-center gap-3 text-sm text-[#666]">
                     <Check size={16} className="text-[#25D366]" />
-                    <span>Museum-quality giclée print</span>
+                    <span>High quality print</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-[#666]">
                     <Check size={16} className="text-[#25D366]" />
-                    <span>Premium {art.frameColor?.toLowerCase() || 'wooden'} frame included</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-[#666]">
-                    <Check size={16} className="text-[#25D366]" />
-                    <span>Archival paper with UV protection</span>
+                    <span>Premium frame included</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-[#666]">
                     <Check size={16} className="text-[#25D366]" />
@@ -478,8 +399,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
               <button
                 onClick={toggleFavorite}
                 className={`px-6 py-4 rounded-lg font-bold uppercase text-xs tracking-widest transition-colors flex items-center justify-center gap-2 ${isFavorite
-                    ? 'bg-[#C5A059] text-white'
-                    : 'bg-white border border-[#E5E5E5] text-[#1C1B1A] hover:border-[#C5A059]'
+                  ? 'bg-[#C5A059] text-white'
+                  : 'bg-white border border-[#E5E5E5] text-[#1C1B1A] hover:border-[#C5A059]'
                   }`}
               >
                 <Heart size={18} className={isFavorite ? 'fill-white' : ''} />
