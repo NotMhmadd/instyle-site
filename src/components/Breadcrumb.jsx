@@ -1,7 +1,10 @@
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const Breadcrumb = ({ items, navigate }) => {
+const Breadcrumb = ({ items }) => {
+  const navigate = useNavigate();
+
   if (!items || items.length === 0) return null;
 
   return (
