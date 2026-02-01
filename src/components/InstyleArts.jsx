@@ -106,8 +106,8 @@ const InstyleArts = ({ limit = 6, items = null, navigate = null, showHeader = tr
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${activeTab === cat.id
-                      ? 'bg-[#1C1B1A] text-white shadow-md'
-                      : 'bg-white text-[#666] border border-[#E5E5E5] hover:border-[#C5A059] hover:text-[#C5A059]'
+                    ? 'bg-[#1C1B1A] text-white shadow-md'
+                    : 'bg-white text-[#666] border border-[#E5E5E5] hover:border-[#C5A059] hover:text-[#C5A059]'
                     }`}
                 >
                   <Icon size={16} />
@@ -152,8 +152,10 @@ const InstyleArts = ({ limit = 6, items = null, navigate = null, showHeader = tr
                       <img
                         src={painting.image}
                         alt={`${painting.title} (${painting.code})`}
-                        className={`w-full h-full object-contain bg-white transition-all duration-700 ease-out group-hover:scale-110 ${loaded[painting.code] ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
+                        className={`w-full h-full object-contain bg-white transition-all duration-700 ease-out group-hover:scale-110 select-none ${loaded[painting.code] ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
                         loading="lazy"
+                        draggable="false"
+                        onContextMenu={(e) => e.preventDefault()}
                         onLoad={() => markLoaded(painting.code)}
                         onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = FALLBACK; }}
                       />

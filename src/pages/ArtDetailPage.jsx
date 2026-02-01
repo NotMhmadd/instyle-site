@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  Heart, 
-  Share2, 
-  MessageCircle, 
-  ChevronLeft, 
+import {
+  ArrowLeft,
+  Heart,
+  Share2,
+  MessageCircle,
+  ChevronLeft,
   ChevronRight,
   Palette,
   Image,
@@ -82,8 +82,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
       const next = { ...prev };
       if (next[art.code]) delete next[art.code];
       else next[art.code] = true;
-      try { localStorage.setItem('instyle:favorites', JSON.stringify(next)); } catch {}
-      try { window.dispatchEvent(new CustomEvent('instyle:favorites-updated', { detail: { count: Object.keys(next).length } })); } catch {}
+      try { localStorage.setItem('instyle:favorites', JSON.stringify(next)); } catch { }
+      try { window.dispatchEvent(new CustomEvent('instyle:favorites-updated', { detail: { count: Object.keys(next).length } })); } catch { }
       return next;
     });
     // Show toast notification
@@ -99,7 +99,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
     if (!art) return;
     const url = window.location.href;
     if (navigator.share) {
-      try { await navigator.share({ title: art.title, text: `Check out ${art.title} from InStyle Arts`, url }); return; } catch {}
+      try { await navigator.share({ title: art.title, text: `Check out ${art.title} from InStyle Arts`, url }); return; } catch { }
     }
     try { await navigator.clipboard.writeText(url); alert('Link copied to clipboard!'); } catch { alert('Share not supported'); }
   };
@@ -139,7 +139,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
     );
   }
 
-  const whatsappMessage = isPrint 
+  const whatsappMessage = isPrint
     ? `Hi! I'm interested in "${art.title}" (${art.code})\n\n📐 Size: ${SIZES[selectedSize]?.label}\n🖼️ Frame: ${selectedFrame}\n✨ Glass: ${selectedGlass === 'anti-reflection' ? 'Anti-Reflection' : 'Standard'}\n💰 Price: $${selectedGlass === 'anti-reflection' ? SIZES[selectedSize]?.antiReflectionPrice : SIZES[selectedSize]?.basePrice}\n\nCan I place an order?`
     : `Hi! I'm interested in "${art.title}" (${art.code}) - ${art.width}×${art.height}cm - Price: $${art.price}. Can you tell me more?`;
 
@@ -148,7 +148,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
       {/* Header */}
       <div className="bg-[#1C1B1A] text-white pt-28 pb-6">
         <div className="container mx-auto px-4 md:px-8">
-          <Breadcrumb 
+          <Breadcrumb
             navigate={navigate}
             items={[
               { label: 'InStyle Arts', href: '/arts' },
@@ -162,18 +162,20 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
       {/* Main Content */}
       <div className="container mx-auto px-4 md:px-8 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          
+
           {/* Left: Image Gallery */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div 
+            <div
               className="relative aspect-square bg-white rounded-xl overflow-hidden border border-[#E5E5E5] cursor-zoom-in group"
               onClick={() => setIsZoomed(true)}
             >
               <img
                 src={galleryImages[selectedImageIndex]?.src}
                 alt={galleryImages[selectedImageIndex]?.alt}
-                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 select-none pointer-events-none"
+                draggable="false"
+                onContextMenu={(e) => e.preventDefault()}
               />
               <div className="absolute top-4 right-4 flex gap-2">
                 <button
@@ -195,7 +197,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                 <ZoomIn size={14} />
                 Click to zoom
               </div>
-              
+
               {/* Navigation arrows */}
               {galleryImages.length > 1 && (
                 <>
@@ -222,11 +224,10 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImageIndex === idx 
-                        ? 'border-[#C5A059] shadow-md' 
+                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImageIndex === idx
+                        ? 'border-[#C5A059] shadow-md'
                         : 'border-[#E5E5E5] hover:border-[#C5A059]/50'
-                    }`}
+                      }`}
                   >
                     <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
                   </button>
@@ -258,8 +259,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
               <h1 className="text-3xl md:text-4xl font-serif text-[#1C1B1A] mb-2">{art.title}</h1>
               {isPrint ? (
                 <p className="text-3xl font-serif text-[#C5A059] font-bold">
-                  ${selectedGlass === 'anti-reflection' 
-                    ? SIZES[selectedSize]?.antiReflectionPrice 
+                  ${selectedGlass === 'anti-reflection'
+                    ? SIZES[selectedSize]?.antiReflectionPrice
                     : SIZES[selectedSize]?.basePrice}
                 </p>
               ) : (
@@ -270,7 +271,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
             {/* Description */}
             <div className="prose prose-sm text-[#666] leading-relaxed">
               <p>
-                {art.description || (isPainting 
+                {art.description || (isPainting
                   ? `"${art.title}" is an original hand-painted oil painting on premium canvas. Each brushstroke captures the essence of the subject with rich, vibrant colors and exceptional detail. This unique piece will add warmth and character to any space.`
                   : `"${art.title}" is a museum-quality giclée print on 200gsm matte archival paper. Available in two sizes with your choice of frame color and glass type. Perfect for adding elegance to your home or office.`
                 )}
@@ -280,7 +281,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
             {/* Specifications */}
             <div className="bg-white rounded-xl border border-[#E5E5E5] p-5 space-y-4">
               <h3 className="font-bold text-[#1C1B1A] text-sm uppercase tracking-widest">Specifications</h3>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 {isPainting && (
                   <div className="flex items-start gap-3">
@@ -340,11 +341,10 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                          selectedSize === size
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedSize === size
                             ? 'bg-[#1C1B1A] text-white'
                             : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
-                        }`}
+                          }`}
                       >
                         <span className="block">{SIZES[size]?.label}</span>
                         <span className="block text-xs opacity-75">${SIZES[size]?.basePrice}</span>
@@ -363,11 +363,10 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                       <button
                         key={glass.id}
                         onClick={() => setSelectedGlass(glass.id)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                          selectedGlass === glass.id
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedGlass === glass.id
                             ? 'bg-[#1C1B1A] text-white'
                             : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
-                        }`}
+                          }`}
                       >
                         <span className="block">{glass.label}</span>
                         {glass.priceModifier > 0 && (
@@ -388,19 +387,18 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                       <button
                         key={frame}
                         onClick={() => setSelectedFrame(frame)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
-                          selectedFrame === frame
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${selectedFrame === frame
                             ? 'bg-[#1C1B1A] text-white'
                             : 'bg-[#F9F8F6] text-[#666] hover:bg-[#E5E5E5]'
-                        }`}
+                          }`}
                       >
-                        <span 
+                        <span
                           className="w-4 h-4 rounded-full border border-gray-300"
-                          style={{ 
-                            backgroundColor: frame === 'Black' ? '#1C1B1A' : 
-                                           frame === 'White' ? '#FFFFFF' : 
-                                           frame === 'Walnut' ? '#5D4037' : 
-                                           '#D4A574'
+                          style={{
+                            backgroundColor: frame === 'Black' ? '#1C1B1A' :
+                              frame === 'White' ? '#FFFFFF' :
+                                frame === 'Walnut' ? '#5D4037' :
+                                  '#D4A574'
                           }}
                         />
                         {frame}
@@ -479,11 +477,10 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
               </a>
               <button
                 onClick={toggleFavorite}
-                className={`px-6 py-4 rounded-lg font-bold uppercase text-xs tracking-widest transition-colors flex items-center justify-center gap-2 ${
-                  isFavorite 
-                    ? 'bg-[#C5A059] text-white' 
+                className={`px-6 py-4 rounded-lg font-bold uppercase text-xs tracking-widest transition-colors flex items-center justify-center gap-2 ${isFavorite
+                    ? 'bg-[#C5A059] text-white'
                     : 'bg-white border border-[#E5E5E5] text-[#1C1B1A] hover:border-[#C5A059]'
-                }`}
+                  }`}
               >
                 <Heart size={18} className={isFavorite ? 'fill-white' : ''} />
                 {isFavorite ? 'Saved' : 'Save'}
@@ -493,7 +490,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
             {/* Delivery Info */}
             <div className="bg-[#F9F8F6] rounded-xl p-5 text-sm text-[#666]">
               <p className="font-bold text-[#1C1B1A] mb-2">Shipping & Delivery</p>
-              <p>Delivery available across Lebanon. Carefully packaged to ensure your artwork arrives in perfect condition. Typical delivery time is 3-7 business days.</p>
+              <p>Delivery available across Lebanon. Carefully packaged to ensure your artwork arrives in perfect condition.</p>
             </div>
           </div>
         </div>
@@ -521,8 +518,10 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 select-none"
                       loading="lazy"
+                      draggable="false"
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                   </div>
                   <div className="p-3">
@@ -538,7 +537,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
 
       {/* Zoom Modal */}
       {isZoomed && (
-        <div 
+        <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
           onClick={() => setIsZoomed(false)}
         >
@@ -548,7 +547,7 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
           >
             <X size={24} />
           </button>
-          
+
           {galleryImages.length > 1 && (
             <>
               <button
@@ -565,14 +564,16 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
               </button>
             </>
           )}
-          
+
           <img
             src={galleryImages[selectedImageIndex]?.src}
             alt={galleryImages[selectedImageIndex]?.alt}
-            className="max-w-full max-h-[90vh] object-contain"
+            className="max-w-full max-h-[90vh] object-contain select-none"
             onClick={(e) => e.stopPropagation()}
+            draggable="false"
+            onContextMenu={(e) => e.preventDefault()}
           />
-          
+
           {/* Image counter */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/10 px-4 py-2 rounded-full text-white text-sm">
             {selectedImageIndex + 1} / {galleryImages.length}

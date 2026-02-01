@@ -57,8 +57,8 @@ const PrintsPage = ({ navigate = null }) => {
       const next = { ...prev };
       if (next[code]) delete next[code];
       else next[code] = true;
-      try { localStorage.setItem('instyle:favorites', JSON.stringify(next)); } catch {}
-      try { window.dispatchEvent(new CustomEvent('instyle:favorites-updated', { detail: { count: Object.keys(next).length } })); } catch {}
+      try { localStorage.setItem('instyle:favorites', JSON.stringify(next)); } catch { }
+      try { window.dispatchEvent(new CustomEvent('instyle:favorites-updated', { detail: { count: Object.keys(next).length } })); } catch { }
       return next;
     });
   };
@@ -74,7 +74,7 @@ const PrintsPage = ({ navigate = null }) => {
     e.stopPropagation();
     const url = `${window.location.origin}/art/${print.code}`;
     if (navigator.share) {
-      try { await navigator.share({ title: print.title, text: `Check out ${print.title} from InStyle Arts`, url }); return; } catch {}
+      try { await navigator.share({ title: print.title, text: `Check out ${print.title} from InStyle Arts`, url }); return; } catch { }
     }
     try { await navigator.clipboard.writeText(url); alert('Link copied to clipboard'); } catch { alert('Share not supported'); }
   };
@@ -87,8 +87,8 @@ const PrintsPage = ({ navigate = null }) => {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    let results = q 
-      ? PRINTS.filter(p => p.title.toLowerCase().includes(q) || p.code.toLowerCase().includes(q)) 
+    let results = q
+      ? PRINTS.filter(p => p.title.toLowerCase().includes(q) || p.code.toLowerCase().includes(q))
       : PRINTS.slice();
 
     // Price filter
@@ -152,9 +152,9 @@ const PrintsPage = ({ navigate = null }) => {
 
           {/* Filter chips - horizontal scroll on mobile */}
           <div className="flex gap-2 overflow-x-auto pb-1 hide-scrollbar -mx-1 px-1">
-            <select 
-              value={sortKey} 
-              onChange={(e) => { setSortKey(e.target.value); setVisible(PAGE_SIZE); }} 
+            <select
+              value={sortKey}
+              onChange={(e) => { setSortKey(e.target.value); setVisible(PAGE_SIZE); }}
               className="shrink-0 px-3 py-2 border border-[#E5E5E5] rounded-full bg-white focus:outline-none focus:border-[#C5A059] text-sm"
             >
               {Object.entries(SORTERS).map(([k, v]) => (
@@ -162,9 +162,9 @@ const PrintsPage = ({ navigate = null }) => {
               ))}
             </select>
 
-            <select 
-              value={categoryFilter} 
-              onChange={(e) => { setCategoryFilter(e.target.value); setVisible(PAGE_SIZE); }} 
+            <select
+              value={categoryFilter}
+              onChange={(e) => { setCategoryFilter(e.target.value); setVisible(PAGE_SIZE); }}
               className="shrink-0 px-3 py-2 border border-[#E5E5E5] rounded-full bg-white focus:outline-none focus:border-[#C5A059] text-sm"
             >
               {CATEGORIES.map(cat => (
@@ -172,12 +172,11 @@ const PrintsPage = ({ navigate = null }) => {
               ))}
             </select>
 
-            <label className={`shrink-0 flex items-center gap-2 px-3 py-2 border rounded-full cursor-pointer transition-colors text-sm ${
-              onlyFavorites ? 'border-[#C5A059] bg-[#C5A059]/10 text-[#C5A059]' : 'border-[#E5E5E5] bg-white text-[#666]'
-            }`}>
-              <input 
-                type="checkbox" 
-                checked={onlyFavorites} 
+            <label className={`shrink-0 flex items-center gap-2 px-3 py-2 border rounded-full cursor-pointer transition-colors text-sm ${onlyFavorites ? 'border-[#C5A059] bg-[#C5A059]/10 text-[#C5A059]' : 'border-[#E5E5E5] bg-white text-[#666]'
+              }`}>
+              <input
+                type="checkbox"
+                checked={onlyFavorites}
                 onChange={(e) => { setOnlyFavorites(e.target.checked); setVisible(PAGE_SIZE); }}
                 className="sr-only"
               />
@@ -205,8 +204,8 @@ const PrintsPage = ({ navigate = null }) => {
         {/* Prints Grid - 2 columns on mobile */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
           {visibleItems.map((print) => (
-            <article 
-              key={print.code} 
+            <article
+              key={print.code}
               className="group bg-white rounded-xl overflow-hidden shadow-sm border border-[#E5E5E5] hover:border-[#C5A059] hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-[0.98]"
               onClick={() => handleItemClick(print)}
             >
@@ -215,15 +214,17 @@ const PrintsPage = ({ navigate = null }) => {
                   <img
                     src={print.image}
                     alt={`${print.title} (${print.code})`}
-                    className={`w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105 transition-opacity duration-700 ${loaded[print.code] ? 'opacity-100' : 'opacity-0'}`}
+                    className={`w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105 select-none transition-opacity duration-700 ${loaded[print.code] ? 'opacity-100' : 'opacity-0'}`}
                     loading="lazy"
+                    draggable="false"
+                    onContextMenu={(e) => e.preventDefault()}
                     onLoad={() => markLoaded(print.code)}
                     onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = FALLBACK; }}
                   />
                   {!loaded[print.code] && (
                     <div className="absolute inset-0 bg-[#F0F0F0] animate-pulse"></div>
                   )}
-                  
+
                   {/* Hover overlay - desktop only */}
                   <div className="hidden sm:flex absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-[#1C1B1A]">
@@ -235,16 +236,16 @@ const PrintsPage = ({ navigate = null }) => {
 
                 {/* Action buttons */}
                 <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex gap-1 sm:gap-2 z-10">
-                  <button 
-                    onClick={(e) => toggleFavorite(print.code, e)} 
-                    aria-label={isFavorite(print.code) ? 'Remove favorite' : 'Add to favorites'} 
+                  <button
+                    onClick={(e) => toggleFavorite(print.code, e)}
+                    aria-label={isFavorite(print.code) ? 'Remove favorite' : 'Add to favorites'}
                     className="bg-white/90 w-8 h-8 sm:w-auto sm:h-auto sm:px-2 sm:py-1 rounded-full sm:rounded-sm hover:bg-white transition-colors flex items-center justify-center touch-btn"
                   >
                     <Heart size={14} className={isFavorite(print.code) ? 'text-[#C5A059] fill-[#C5A059]' : 'text-[#666666]'} />
                   </button>
-                  <button 
-                    onClick={(e) => sharePrint(print, e)} 
-                    aria-label={`Share ${print.title}`} 
+                  <button
+                    onClick={(e) => sharePrint(print, e)}
+                    aria-label={`Share ${print.title}`}
                     className="hidden sm:flex bg-white/90 px-2 py-1 rounded-sm hover:bg-white transition-colors items-center justify-center"
                   >
                     <Share2 size={14} className="text-[#666666]" />
@@ -288,8 +289,8 @@ const PrintsPage = ({ navigate = null }) => {
 
         {visible < filtered.length && (
           <div className="text-center mt-10">
-            <button 
-              onClick={() => setVisible(v => Math.min(filtered.length, v + PAGE_SIZE))} 
+            <button
+              onClick={() => setVisible(v => Math.min(filtered.length, v + PAGE_SIZE))}
               className="px-8 py-3 bg-[#1C1B1A] text-white font-bold uppercase text-xs tracking-widest rounded-lg hover:bg-[#C5A059] transition-colors"
             >
               Load More Prints
