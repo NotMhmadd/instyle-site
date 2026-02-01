@@ -61,6 +61,13 @@ const PageLoader = () => (
 // 1. DESIGN SYSTEM & THEME
 // ==========================================
 
+// ==========================================
+// SITE MODE TOGGLE
+// ==========================================
+// Set to 'arts-only' for temporary arts-only homepage
+// Set to 'full' to restore the complete website with wood furniture
+const SITE_MODE = 'arts-only'; // Options: 'full' | 'arts-only'
+
 const THEME = {
   colors: {
     primary: '#1C1B1A',       // Soft Black
@@ -381,8 +388,36 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
             <img src="/images/instyle-logo.png" alt="InStyle Modern Wood Art" className={`object-contain transition-all duration-300 ${scrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'}`} />
           </a>
           <div className="hidden lg:flex items-center gap-2 bg-black/5 backdrop-blur-sm rounded-full p-1.5 border border-white/10">
-            {['Collections', 'Curated', 'Spotlight', 'Process', 'Contact'].map((item) => {
-              const href = `/#${item.toLowerCase()}`;
+            {(SITE_MODE === 'arts-only'
+              ? ['InStyle Arts', 'Contact']
+              : ['Collections', 'Curated', 'Spotlight', 'Process', 'Contact']
+            ).map((item) => {
+              const href = item === 'InStyle Arts' ? '/arts' : `/#${item.toLowerCase()}`;
+
+              // Special styling for InStyle Arts in arts-only mode
+              if (item === 'InStyle Arts') {
+                return (
+                  <a
+                    key={item}
+                    href="/arts"
+                    onClick={(e) => handleNavClick(e, 'InStyle Arts', '/arts')}
+                    className="group relative px-6 py-2 text-sm font-medium overflow-hidden rounded-full transition-all duration-300"
+                  >
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#C5A059] via-[#D4AF61] to-[#C5A059] opacity-100 shadow-md"></span>
+                    <span className="relative flex items-center gap-2 text-white font-bold tracking-wide">
+                      <span className="bg-white/20 p-0.5 rounded">
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <path d="M21 15l-5-5L5 21" />
+                        </svg>
+                      </span>
+                      InStyle Arts
+                    </span>
+                  </a>
+                );
+              }
+
               return (
                 <a
                   key={item}
@@ -395,27 +430,29 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
               );
             })}
 
-            {/* InStyle Arts - Premium Sub-brand */}
-            <a
-              href="/arts"
-              onClick={(e) => handleNavClick(e, 'InStyle Arts', '/arts')}
-              className="group relative px-6 py-2 text-sm font-medium overflow-hidden rounded-full transition-all duration-300 ml-2"
-            >
-              {/* Background gradient */}
-              <span className="absolute inset-0 bg-gradient-to-r from-[#C5A059] via-[#D4AF61] to-[#C5A059] opacity-100 shadow-md"></span>
+            {/* InStyle Arts - Premium Sub-brand (only shown in full mode, already in nav for arts-only) */}
+            {SITE_MODE === 'full' && (
+              <a
+                href="/arts"
+                onClick={(e) => handleNavClick(e, 'InStyle Arts', '/arts')}
+                className="group relative px-6 py-2 text-sm font-medium overflow-hidden rounded-full transition-all duration-300 ml-2"
+              >
+                {/* Background gradient */}
+                <span className="absolute inset-0 bg-gradient-to-r from-[#C5A059] via-[#D4AF61] to-[#C5A059] opacity-100 shadow-md"></span>
 
-              {/* Content */}
-              <span className="relative flex items-center gap-2 text-white font-bold tracking-wide">
-                <span className="bg-white/20 p-0.5 rounded">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
+                {/* Content */}
+                <span className="relative flex items-center gap-2 text-white font-bold tracking-wide">
+                  <span className="bg-white/20 p-0.5 rounded">
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                  </span>
+                  InStyle Arts
                 </span>
-                InStyle Arts
-              </span>
-            </a>
+              </a>
+            )}
           </div>
           <div className="flex items-center gap-4">
             <button onClick={onOpenCart} className={`relative p-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#C5A059] rounded-full btn-press ${scrolled ? 'text-[#1C1B1A] hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}>
@@ -446,7 +483,10 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
           {/* Menu items with staggered animation */}
           <div className="flex-1 overflow-y-auto p-4">
             <div className="flex flex-col gap-2">
-              {['Collections', 'Curated', 'Spotlight', 'Process', 'Favorites', 'Contact'].map((item, index) => {
+              {(SITE_MODE === 'arts-only'
+                ? ['Favorites', 'Contact']
+                : ['Collections', 'Curated', 'Spotlight', 'Process', 'Favorites', 'Contact']
+              ).map((item, index) => {
                 const href = item === 'Favorites' ? '/favorites' : `/#${item.toLowerCase()}`;
                 return (
                   <a
@@ -465,7 +505,7 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
 
             {/* InStyle Arts - Distinct Sub-brand in Mobile */}
             <div className="mt-6 pt-6 border-t border-[#E5E5E5] mobile-menu-item" style={{ animationDelay: '350ms' }}>
-              <p className="text-xs uppercase tracking-wider text-[#999] mb-3 px-2">Sub-brand</p>
+              <p className="text-xs uppercase tracking-wider text-[#999] mb-3 px-2">{SITE_MODE === 'arts-only' ? 'Our Collection' : 'Sub-brand'}</p>
               <a
                 href="/arts"
                 onClick={(e) => handleNavClick(e, 'InStyle Arts', '/arts')}
@@ -1017,6 +1057,128 @@ const ServiceStrip = memo(() => {
 });
 ServiceStrip.displayName = 'ServiceStrip';
 
+// --- Arts-Only Homepage Component ---
+const ArtsOnlyHome = memo(({ navigate }) => {
+  return (
+    <>
+      {/* Hero Section - Arts Focused */}
+      <section className="relative min-h-[75vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#1C1B1A]">
+        {/* Background gradient & Texture */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1C1B1A] via-[#2A2927] to-[#0f0f0f]" />
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23C5A059\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+
+        {/* Decorative elements - Animated Aura */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-[#C5A059]/10 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-[#C5A059]/5 rounded-full blur-[120px]" />
+
+        {/* Central Halo */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-[#C5A059]/5 rounded-full animate-slow-zoom" />
+
+        <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
+          {/* Sub-brand badge with fade-in */}
+          <div className="inline-flex items-center gap-2 bg-[#C5A059]/10 border border-[#C5A059]/30 rounded-full px-6 py-2 mb-8 animate-fade-in">
+            <svg className="w-4 h-4 text-[#C5A059]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <path d="M21 15l-5-5L5 21" />
+            </svg>
+            <span className="text-[#C5A059] text-sm font-bold uppercase tracking-widest">InStyle Arts</span>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.1] mb-8 animate-in slide-in-from-bottom-5" style={{ animationDelay: '100ms' }}>
+            Art That<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A059] to-[#E5C57F] animate-shimmer" style={{ backgroundSize: '200%' }}>Speaks</span> to You.
+          </h1>
+
+          <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed animate-in slide-in-from-bottom-5" style={{ animationDelay: '200ms' }}>
+            Discover our exclusive collection of handcrafted oil paintings and premium framed prints.
+            Transform your space into a gallery of personal expression.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-5 justify-center animate-in slide-in-from-bottom-5" style={{ animationDelay: '300ms' }}>
+            <button
+              onClick={() => navigate('/arts')}
+              className="group relative inline-flex items-center justify-center gap-3 px-10 py-4 bg-[#C5A059] text-white font-bold uppercase text-sm tracking-widest rounded-lg overflow-hidden transition-all shadow-lg hover:shadow-[#C5A059]/30 hover:-translate-y-1"
+            >
+              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+              <span className="relative flex items-center gap-3">
+                Explore Collection
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+            <a
+              href="https://wa.me/96181773588?text=Hi!%20I'm%20interested%20in%20InStyle%20Arts%20collection."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-white font-bold uppercase text-sm tracking-widest rounded-lg hover:bg-white/10 hover:border-white/20 transition-all"
+            >
+              <MessageCircle size={18} />
+              Contact Us
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Coming Soon Banner - Solid Premium Card for Better Contrast */}
+      <section className="relative -mt-10 z-20 px-4">
+        <div className="container mx-auto md:max-w-4xl">
+          <div className="bg-[#1C1B1A] border border-[#C5A059] rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden group">
+            {/* Subtle Texture */}
+            <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#444 1px, transparent 1px)', backgroundSize: '16px 16px' }}></div>
+
+            {/* Gold Accents */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A059]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#C5A059]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+              <div className="flex items-center gap-5 text-left">
+                <div className="w-14 h-14 bg-[#C5A059] rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(197,160,89,0.3)] transform rotate-3 group-hover:rotate-0 transition-transform duration-300">
+                  <Clock size={28} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-serif text-2xl leading-none mb-1">Coming Soon</p>
+                  <p className="text-[#C5A059] font-bold text-xs uppercase tracking-widest">Full Furniture Collection</p>
+                </div>
+              </div>
+
+              <div className="hidden md:block w-px h-12 bg-white/10" />
+
+              <p className="text-gray-300 text-sm md:text-base max-w-sm text-center md:text-left leading-relaxed">
+                Our bespoke wood furniture and custom carpentry services are being curated.
+                <strong className="text-white block mt-1">Join us for the full experience soon.</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* InStyle Arts Gallery */}
+      <InstyleArts navigate={navigate} limit={9} />
+
+      {/* Contact teaser */}
+      <section className="py-16 md:py-20 bg-[#1C1B1A] text-white">
+        <div className="container mx-auto px-4 md:px-8 text-center">
+          <span className="text-[#C5A059] text-xs font-bold uppercase tracking-widest mb-4 block">Get in Touch</span>
+          <h2 className="text-3xl md:text-4xl font-serif mb-4">Interested in Our Art?</h2>
+          <p className="text-white/70 max-w-xl mx-auto mb-8">
+            Contact us for custom sizes, commissions, or any questions about our art collection.
+          </p>
+          <a
+            href="https://wa.me/96181773588"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#25D366] text-white font-bold uppercase text-sm tracking-widest rounded-lg hover:bg-[#128C7E] transition-all shadow-lg"
+          >
+            <MessageCircle size={18} />
+            Chat on WhatsApp
+          </a>
+        </div>
+      </section>
+    </>
+  );
+});
+ArtsOnlyHome.displayName = 'ArtsOnlyHome';
+
 // --- 4.7 Footer ---
 const Footer = memo(() => {
   return (
@@ -1112,7 +1274,20 @@ const FooterContactGrid = () => {
     const update = () => {
       const beirut = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Beirut' }));
       const h = beirut.getHours();
-      setOpen(h >= 10 && h < 19);
+      const day = beirut.getDay(); // 0 = Sunday, 6 = Saturday
+
+      let isOpen = false;
+      if (day >= 1 && day <= 5) {
+        // Monday - Friday: 8am - 7pm
+        isOpen = h >= 8 && h < 19;
+      } else if (day === 6) {
+        // Saturday: 8am - 4pm
+        isOpen = h >= 8 && h < 16;
+      } else {
+        // Sunday: 12pm - 4pm
+        isOpen = h >= 12 && h < 16;
+      }
+      setOpen(isOpen);
     };
     update();
     const id = setInterval(update, 600000); // every 10 minutes
@@ -1132,17 +1307,23 @@ const FooterContactGrid = () => {
         <ContactCard variant="whatsapp" onCopy={pushToast} copyValue="+961 81 773 588" href="https://wa.me/96181773588" icon={MessageCircle} title="+961 81 773 588" label="WhatsApp" external />
         <ContactCard onCopy={pushToast} copyValue="instyle.lebanon@gmail.com" href="mailto:instyle.lebanon@gmail.com" icon={Mail} title="instyle.lebanon@gmail.com" label="Email" />
       </div>
-      <div className="p-4 md:p-5 rounded-xl border border-[#E5E5E5] bg-[#F9F8F6] flex items-center justify-between">
-        <div className="flex items-center gap-3 md:gap-4">
-          <div className="w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-[#C5A059] text-white shadow-sm shrink-0">
-            <Clock size={20} />
+      <div className="p-4 md:p-5 rounded-xl border border-[#E5E5E5] bg-[#F9F8F6] flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-[#C5A059] text-white shadow-sm shrink-0">
+              <Clock size={20} />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-[#1C1B1A]">Mon – Fri: 8am – 7pm</span>
+              <span className="text-[10px] uppercase tracking-widest text-[#999]">Hours</span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-[#1C1B1A]">Mon – Sat: 10am – 7pm</span>
-            <span className="text-[10px] uppercase tracking-widest text-[#999]">Hours</span>
-          </div>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg ${open ? 'bg-[#25D366] text-white' : 'bg-[#1C1B1A] text-white'}`}>{open ? 'Open Now' : 'Closed'}</span>
         </div>
-        <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg ${open ? 'bg-[#25D366] text-white' : 'bg-[#1C1B1A] text-white'}`}>{open ? 'Open Now' : 'Closed'}</span>
+        <div className="flex gap-4 text-xs text-[#666] pl-14 md:pl-16">
+          <span>Sat: 8am – 4pm</span>
+          <span>Sun: 12pm – 4pm</span>
+        </div>
       </div>
       {toast && (
         <div className="fixed bottom-20 md:bottom-6 left-4 right-4 md:left-auto md:right-4 md:w-auto bg-[#1C1B1A] text-white text-xs px-4 py-3 rounded-xl shadow-lg z-50 text-center">
@@ -1349,14 +1530,18 @@ const App = () => {
             <Route
               path="/"
               element={
-                <>
-                  <VideoHero />
-                  <TrustBar />
-                  <CollectionsSection onAddToCart={addToCart} navigate={navigate} />
-                  <RealHomesProject />
-                  <InstyleArts navigate={navigate} />
-                  <ServiceStrip />
-                </>
+                SITE_MODE === 'arts-only' ? (
+                  <ArtsOnlyHome navigate={navigate} />
+                ) : (
+                  <>
+                    <VideoHero />
+                    <TrustBar />
+                    <CollectionsSection onAddToCart={addToCart} navigate={navigate} />
+                    <RealHomesProject />
+                    <InstyleArts navigate={navigate} />
+                    <ServiceStrip />
+                  </>
+                )
               }
             />
             <Route path="*" element={<NotFoundPage navigate={navigate} />} />
