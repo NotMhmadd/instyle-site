@@ -1,23 +1,21 @@
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Breadcrumb = ({ items }) => {
-  const navigate = useNavigate();
-
   if (!items || items.length === 0) return null;
 
   return (
     <nav aria-label="Breadcrumb" className="mb-6">
       <ol className="flex items-center flex-wrap gap-1 text-sm">
         <li className="flex items-center">
-          <button
-            onClick={() => navigate('/')}
+          <Link
+            to="/"
             className="flex items-center gap-1 text-[#999] hover:text-[#C5A059] transition-colors"
           >
             <Home size={14} />
             <span className="sr-only sm:not-sr-only">Home</span>
-          </button>
+          </Link>
         </li>
         {items.map((item, index) => (
           <li key={index} className="flex items-center">
@@ -27,12 +25,12 @@ const Breadcrumb = ({ items }) => {
                 {item.label}
               </span>
             ) : (
-              <button
-                onClick={() => item.href && navigate(item.href)}
+              <Link
+                to={item.href || '#'}
                 className="text-[#999] hover:text-[#C5A059] transition-colors truncate max-w-[150px]"
               >
                 {item.label}
-              </button>
+              </Link>
             )}
           </li>
         ))}
