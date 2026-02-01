@@ -50,7 +50,8 @@ const ArtDetailPage = ({ navigate, onAddToCart, onAddRecent, showToast }) => {
         type: 'art'
       });
     }
-  }, [art, onAddRecent, isPainting]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [artId]);
 
   // Get related items (same category, exclude current)
   const relatedItems = useMemo(() => {

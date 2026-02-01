@@ -1,12 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Image, Heart, Share2, Eye } from 'lucide-react';
 import { PRINTS } from '../data/prints';
-import PriceRangeSlider from '../components/PriceRangeSlider';
+
 
 const SORTERS = {
   default: { label: 'Default', fn: () => 0 },
-  price_asc: { label: 'Price ↑', fn: (a, b) => a.price - b.price },
-  price_desc: { label: 'Price ↓', fn: (a, b) => b.price - a.price },
   newest: { label: 'Newest', fn: () => 0 },
 };
 
@@ -19,11 +17,8 @@ const PrintsPage = ({ navigate = null }) => {
   const [sortKey, setSortKey] = useState('default');
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [categoryFilter, setCategoryFilter] = useState('All');
-
-  const [priceRange, setPriceRange] = useState([0, 10000]);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(10000);
   const [onlyFavorites, setOnlyFavorites] = useState(false);
+
 
   const FALLBACK = 'https://placehold.co/800x600/efefef/666?text=Image+Not+Found';
 
@@ -32,14 +27,6 @@ const PrintsPage = ({ navigate = null }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  useEffect(() => {
-    const prices = PRINTS.map(p => p.price || 0);
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
-    setMinPrice(min);
-    setMaxPrice(max);
-    setPriceRange([min, max]);
-  }, []);
 
   // Favorites
   const [favorites, setFavorites] = useState(() => {
@@ -91,9 +78,6 @@ const PrintsPage = ({ navigate = null }) => {
       ? PRINTS.filter(p => p.title.toLowerCase().includes(q) || p.code.toLowerCase().includes(q))
       : PRINTS.slice();
 
-    // Price filter
-    const [minP, maxP] = priceRange;
-    results = results.filter(p => (p.price || 0) >= minP && (p.price || 0) <= maxP);
 
     // Category filter
     if (categoryFilter !== 'All') {
@@ -112,7 +96,7 @@ const PrintsPage = ({ navigate = null }) => {
     }
 
     return results;
-  }, [query, sortKey, priceRange, categoryFilter, onlyFavorites, favorites]);
+  }, [query, sortKey, categoryFilter, onlyFavorites, favorites]);
 
   const visibleItems = filtered.slice(0, visible);
 
@@ -183,14 +167,6 @@ const PrintsPage = ({ navigate = null }) => {
               <Heart size={14} className={onlyFavorites ? 'fill-current' : ''} />
               <span className="font-medium whitespace-nowrap">Favorites</span>
             </label>
-          </div>
-
-          {/* Price Range - collapsible on mobile */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pt-2 border-t border-[#F0F0F0]">
-            <label className="text-sm font-medium text-[#666666] shrink-0">Price:</label>
-            <div className="flex-1">
-              <PriceRangeSlider min={minPrice} max={maxPrice} value={priceRange} onChange={(r) => { setPriceRange(r); setVisible(PAGE_SIZE); }} />
-            </div>
           </div>
         </div>
 
