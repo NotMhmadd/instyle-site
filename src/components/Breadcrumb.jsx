@@ -20,7 +20,7 @@ const Breadcrumb = ({ items, navigate }) => {
           <li key={index} className="flex items-center">
             <ChevronRight size={14} className="mx-2 text-[#E5E5E5]" />
             {index === items.length - 1 ? (
-              <span className="text-[#1C1B1A] font-medium truncate max-w-[200px]">
+              <span className="text-white font-medium truncate max-w-[200px]">
                 {item.label}
               </span>
             ) : (

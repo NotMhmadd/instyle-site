@@ -37,7 +37,7 @@ import PR32 from '../../images/32PR.webp';
 // Print sizes available (A3 and A2)
 const SIZES = {
   a3: { label: '29.7 × 42 cm', dimensions: '29.7x42', basePrice: 29, antiReflectionPrice: 34 },
-  a2: { label: '42 × 59.4 cm', dimensions: '42x59.4', basePrice: 39, antiReflectionPrice: 44 },
+  a2: { label: '42 × 59.4 cm', dimensions: '42x59.4', basePrice: 44, antiReflectionPrice: 49 },
 };
 
 // Glass options
