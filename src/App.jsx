@@ -1062,7 +1062,7 @@ const ArtsOnlyHome = memo(({ navigate }) => {
   return (
     <>
       {/* Hero Section - Arts Focused */}
-      <section className="relative min-h-[75vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#1C1B1A]">
+      <section className="relative min-h-[75vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#1C1B1A] pb-8 md:pb-0">
         {/* Background gradient & Texture */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#1C1B1A] via-[#2A2927] to-[#0f0f0f]" />
         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23C5A059\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
@@ -1120,7 +1120,7 @@ const ArtsOnlyHome = memo(({ navigate }) => {
       </section>
 
       {/* Coming Soon Banner - Solid Premium Card for Better Contrast */}
-      <section className="relative -mt-10 z-20 px-4">
+      <section className="relative z-20 px-4 py-6 md:py-10">
         <div className="container mx-auto md:max-w-4xl">
           <div className="bg-[#1C1B1A] border border-[#C5A059] rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden group">
             {/* Subtle Texture */}
