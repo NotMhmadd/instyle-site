@@ -385,7 +385,7 @@ const Navbar = ({ cartCount, favCount = 0, onOpenCart, navigate, openFavorites, 
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3 top-0' : 'bg-transparent py-6 top-0'}`}>
         <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
           <a href="/" onClick={(e) => { e.preventDefault(); if (navigate) navigate('/'); }} className="flex items-center group relative z-50">
-            <img src="/images/instyle-logo.png" alt="InStyle Modern Wood Art" className={`object-contain transition-all duration-300 ${scrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'}`} />
+            <img src="/images/instyle-logo.png" alt="InStyle Modern Wood Art" className={`object-contain transition-all duration-300 ${scrolled ? 'h-20 md:h-24' : 'h-24 md:h-32'}`} />
           </a>
           <div className="hidden lg:flex items-center gap-2 bg-black/5 backdrop-blur-sm rounded-full p-1.5 border border-white/10">
             {(SITE_MODE === 'arts-only'
@@ -1075,16 +1075,6 @@ const ArtsOnlyHome = memo(({ navigate }) => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-[#C5A059]/5 rounded-full animate-slow-zoom" />
 
         <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
-          {/* Sub-brand badge with fade-in */}
-          <div className="inline-flex items-center gap-2 bg-[#C5A059]/10 border border-[#C5A059]/30 rounded-full px-6 py-2 mb-8 animate-fade-in">
-            <svg className="w-4 h-4 text-[#C5A059]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <path d="M21 15l-5-5L5 21" />
-            </svg>
-            <span className="text-[#C5A059] text-sm font-bold uppercase tracking-widest">InStyle Arts</span>
-          </div>
-
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white leading-[1.1] mb-8 animate-in slide-in-from-bottom-5" style={{ animationDelay: '100ms' }}>
             Art That<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A059] to-[#E5C57F] animate-shimmer" style={{ backgroundSize: '200%' }}>Speaks</span> to You.
